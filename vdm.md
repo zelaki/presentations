@@ -10,6 +10,7 @@ style: |
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
+  
 ---
 
 # Diffusion Models
@@ -331,18 +332,127 @@ section {
 }
 </style>
 ### . . . and maximize the ELBO by minimizing the $D_{KL}$
-
+<br>
+</br>
 
 $$
 \begin{align}
 &\text{argmin}_{\theta} \; D_{KL}(q(x_{t-1}|x_t, x_0) \; || \; p_{\theta}(x_{t-1} | x_t)) \\
-= \; &\text{argmin}_{\theta} \; D_{KL}(\mathcal{N}(x_{t-1}; \mu_q(t), \Sigma_q(t)) \; || \;  \mathcal{N}(x_{t-1}; \mu_{\theta}(t), \Sigma_{q}(t))) && \text{(denoising transition step to also be $Σ_q(t)$)} \\   
-= \; &\text{argmin}_{\theta} \; \frac{1}{2} 
+= \; &\text{argmin}_{\theta} \; D_{KL}(\mathcal{N}(x_{t-1}; \mu_q(t), \Sigma_q(t)) \; || \;  \mathcal{N}(x_{t-1}; \mu_{\theta}(t), \Sigma_{q}(t))) && \text{(set denoising transition variannce to be $Σ_q(t)$)} \\   
+= \; & \;\; . . . && (\text{KL Divergence Gaussians}) \\
+= \; &\text{argmin}_{\theta} \; \frac{1}{2\sigma_q^2(t)} 
 \left[
-\log \frac{  }{}
+|| \mu_{\theta} - \mu_q||_2^2
 \right]
 \\ 
 
 \end{align}
 $$
 
+<div style="text-align: left;">
+
+We want to optimize $µ_{\theta}(x_t, t)$ to matches $\mu_q(x_t, x_0)$.
+
+---
+
+
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### . . . and maximize the ELBO by minimizing the $D_{KL}$
+
+<div style="text-align: left;">
+
+We can match $\mu_{\theta}$ and $\mu_{q}$ as close as possible:
+
+$\mu_q(x_t, x_0) = \frac{\sqrt{a_t} (1-\bar{a}_{t-1})x_t + \sqrt{\bar{a}_{t-1}}(1-a_t)\mathbin{\color{green}x_0}}
+{1- \bar{a}_t}$,
+
+
+$\mu_{\theta}(x_t,t) = \frac{\sqrt{a_t} (1-\bar{a}_{t-1})x_t + \sqrt{\bar{a}_{t-1}}(1-a_t)\mathbin{\color{green}\mathbf{x_{\theta}(x_t,t)}}}
+{1- \bar{a}_t}$
+
+
+
+$x_{\theta}(x_t, t)$ is parameterized by a neural network that seeks to predict $x_0$ from noisy image $x_t$ and time index t. So finaly we can write:
+
+</div>
+
+$
+\text{argmin}_{\theta} =
+\frac
+  {\bar{a}_{t-1}(1-a_t)^2}
+  {2\sigma_q^2(t)(1-\bar{a}_t)^2}
+\left[
+|| x_{\theta}(x_t,t) - x_0||_2^2
+\right]
+$
+
+---
+
+
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### Simplified Loss
+
+<div style="text-align: left;">
+
+Since $x_t$ is available as input to the model, we can choose the parameterization:
+</div>
+
+
+$
+x_0 = \frac
+  {x_t = \sqrt{1-\bar{a}_t}\epsilon_0}
+  {\sqrt{\bar{a}_t}}
+$
+
+<div style="text-align: left;">
+
+And plug it into $\mu_{q}(x_t,x_0)$ and reformulate the loss to:
+</div>
+<br>
+</br>
+
+$
+\text{argmin}_{\theta} = 
+\frac
+{(1-a_t)^2}
+{\underbrace{2\sigma_q^2(t) (1-\bar{a}_t)a_t}_{\lambda_t}}
+\left[
+||e_0 - e_{\theta}(x_t,t)||_2^2
+\right]
+$
+<div style="text-align: left;">
+
+- $\lambda_t$ ensures properly train the ELBO.
+
+- However, this weight is often very large for small t’s.
+
+---
+
+<style>
+section:nth-of-type(2) h1 {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>
+
+### Simplified Loss
+$\mathcal{L}_{Simple} =
+\mathbb{E}_{t,x_0,\epsilon}
+\left[
+  ||\epsilon - \epsilon_{\theta}(x_t) ||_2^2
+\right]
+$
+
+---
+
+![bg  width:1000px ](training_ddpm.png)
