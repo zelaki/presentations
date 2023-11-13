@@ -10,7 +10,22 @@ style: |
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
-  
+  .reference {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 18px; /* Adjust the font size as needed */
+    color: #888;    /* Adjust the color as needed */
+  }
+  .split-image-slide {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    }
+
+
 ---
 
 # Diffusion Models
@@ -113,7 +128,7 @@ An Introduction
 ##### Mininize the Evidence Lower Bound (ELBO)
 - <span style="font-size:60%">The evidence is quantified as the log likelihood of the observed data.
 - <span style="font-size:60%">Maximizing the ELBO becomes a proxy objective with which to optimize a latent variable model.
-![bg right width:300px ](vae1.png)
+![bg right invert width:300px ](vae1.png)
 
 - <span style="font-size:60%"> $\log p(x) \geq \mathbb{E}_{q_{\phi}(z|x)}[log(\frac{p(x,z)}{q_{\phi}(z|x)})]$
 
@@ -338,7 +353,7 @@ section {
 $$
 \begin{align}
 &\text{argmin}_{\theta} \; D_{KL}(q(x_{t-1}|x_t, x_0) \; || \; p_{\theta}(x_{t-1} | x_t)) \\
-= \; &\text{argmin}_{\theta} \; D_{KL}(\mathcal{N}(x_{t-1}; \mu_q(t), \Sigma_q(t)) \; || \;  \mathcal{N}(x_{t-1}; \mu_{\theta}(t), \Sigma_{q}(t))) && \text{(set denoising transition variannce to be $Σ_q(t)$)} \\   
+= \; &\text{argmin}_{\theta} \; D_{KL}(\mathcal{N}(x_{t-1}; \mu_q(t), \Sigma_q(t)) \; || \;  \mathcal{N}(x_{t-1}; \mu_{\theta}(t), \Sigma_{q}(t))) && \text{(set denoising transition variance to be $Σ_q(t)$)} \\   
 = \; & \;\; . . . && (\text{KL Divergence Gaussians}) \\
 = \; &\text{argmin}_{\theta} \; \frac{1}{2\sigma_q^2(t)} 
 \left[
@@ -366,6 +381,7 @@ section {
 <div style="text-align: left;">
 
 We can match $\mu_{\theta}$ and $\mu_{q}$ as close as possible:
+</div>
 
 $\mu_q(x_t, x_0) = \frac{\sqrt{a_t} (1-\bar{a}_{t-1})x_t + \sqrt{\bar{a}_{t-1}}(1-a_t)\mathbin{\color{green}x_0}}
 {1- \bar{a}_t}$,
@@ -375,6 +391,7 @@ $\mu_{\theta}(x_t,t) = \frac{\sqrt{a_t} (1-\bar{a}_{t-1})x_t + \sqrt{\bar{a}_{t-
 {1- \bar{a}_t}$
 
 
+<div style="text-align: left;">
 
 $x_{\theta}(x_t, t)$ is parameterized by a neural network that seeks to predict $x_0$ from noisy image $x_t$ and time index t. So finaly we can write:
 
@@ -395,7 +412,7 @@ $
 
 <style scoped>
 section {
-  font-size: 26px;
+  font-size: 22px;
 }
 </style>
 ### Simplified Loss
@@ -412,9 +429,29 @@ x_0 = \frac
   {\sqrt{\bar{a}_t}}
 $
 
+
 <div style="text-align: left;">
 
-And plug it into $\mu_{q}(x_t,x_0)$ and reformulate the loss to:
+$\mu_{\theta}$ and $\mu_{q}$ become:
+</div>
+
+$
+\mu_q(x_t, x_0) = 
+\frac{1}{\sqrt{a_t}}x_t -\frac{1-a_t}{\sqrt{1-\bar{a}_t} \sqrt{a}_t} \mathbin{\color{green}\epsilon_0}
+$
+
+$
+\mu_{\theta}(x_t, t) = 
+\frac{1}{\sqrt{a_t}}x_t -\frac{1-a_t}{\sqrt{1-\bar{a}_t} \sqrt{a}_t} 
+\mathbin{\color{green}\epsilon_{\theta}(x_t,t)}
+$
+
+<div style="text-align: left;">
+
+
+
+
+Reformulate the loss to:
 </div>
 <br>
 </br>
@@ -430,9 +467,10 @@ $
 $
 <div style="text-align: left;">
 
-- $\lambda_t$ ensures properly train the ELBO.
 
-- However, this weight is often very large for small t’s.
+- However, $\lambda_t$  is often very large for small t’s.
+
+- Discard $\lambda_t$ and minimize a weighted version of the ELBO.
 
 ---
 
@@ -446,7 +484,7 @@ section:nth-of-type(2) h1 {
 </style>
 
 ### Simplified Loss
-$\mathcal{L}_{Simple} =
+$\mathcal{L}_{Simple}(\theta) =
 \mathbb{E}_{t,x_0,\epsilon}
 \left[
   ||\epsilon - \epsilon_{\theta}(x_t) ||_2^2
@@ -454,5 +492,172 @@ $\mathcal{L}_{Simple} =
 $
 
 ---
+#### DDPM: Training and Sampling
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
-![bg  width:1000px ](training_ddpm.png)
+![bg invert width:1200px ](training_ddpm1.png)
+
+---
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### DDPM: Implementation details
+
+<div style="text-align: left;">
+
+- A U-Net is used to estimate $\epsilon_{\theta}$
+- Time information added to U-Net with positional embeddings
+- Images scaled linearly to $[-1,1]$
+- Linear schudle from $\beta_1 = 10^{-4}$ to $\beta_T = 0.02$, with $T = 1000$
+- These hyperparameters enusre that $a_T \rightarrow 0$ and $q(x_T | x_0) \approx \mathcal{N}(0,1)$
+
+---
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### DDPM: Predicting $\mu$ vs predicting $\epsilon$
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+![bg invert width:600px ](results_ddpm1.png)
+
+---
+<style scoped>
+section {
+  font-size: 22px;
+}
+</style>
+### Learning $\Sigma_{\theta} (x_t,t)$
+
+<div style="text-align: left;">
+
+- In DDPM  $\Sigma_{\theta} (x_t,t) = \Sigma(t) = \sigma^2_t I$
+  - with $\sigma_t^2 = \beta_t$ or $\sigma_t^2 = \bar{\beta}_t :=  \frac{1 - \bar{a}_{t-1}}{1 - \bar{a}_t} \beta_t$
+  - $\beta_t$ and $\bar{\beta}_t$ yield similar results.
+<br>
+
+- $\beta_t$ and $\bar{\beta}_t$ almost equal except near $t = 0$
+
+
+- Learn to intertpolate $\beta_t$ and $\bar{\beta}_t$ 
+  - $\sigma^2_t = \exp(v \log \beta_t + (1 − v) \log \bar{\beta}_t)$
+
+<div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
+
+![bg right invert width:600px ](b_t.png)
+
+
+---
+##### Noise Schedule
+
+<div style="text-align: left;">
+
+- <span style="font-size:80%"> Problems with linear schedule.
+  - <span style="font-size:80%"> End of the forward noising process is too noisy.
+  - <span style="font-size:80%"> Doesn’t contribute very much to sample quality
+
+- <span style="font-size:80%"> Cosine schedule:
+  - <span style="font-size:80%"> $\bar{a}_t = \frac{f(t)}{f(0)}, \; \; f(t) = \cos^2 (\frac{t/T + s}{1+s} \cdot \frac{\pi}{2} )$
+
+</div>
+<br>
+
+![width:1000px ](noise.png)
+
+<div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
+
+
+
+
+
+---
+
+##### Noise Schedule: Cosine vs Linear
+<br>
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+
+<style>
+img[alt~="right"] {
+  position: absolute;
+  top: 200px;
+  right: 0px;
+}
+</style>
+
+<style>
+img[alt~="left"] {
+  position: absolute;
+  top: 200px;
+  right: 630px;
+}
+</style>
+
+
+![right invert](cosine1.png)
+![left invert](rev_skip1.png)
+
+
+---
+<style scoped>
+section {
+  font-size: 21px;
+}
+</style>
+### Learning the Noise Schedule
+
+
+<div style="text-align: left;">
+
+<br>
+<br>
+
+<br>
+
+
+- Recall $q(x_t|x_0) = \mathcal{N}(x_t; \; \sqrt{\bar{a}_t}x_0, (1-\bar{a})I)$
+
+- Define $\text{SNR}=\frac{\mu^2}{\sigma^2} = \frac{\bar{a}_t}{1-\bar{a}_t}$
+
+- Model SNR with a NN:
+  - $\text{SNR}(t) = \exp(-\omega_{\phi}(t))$
+
+  - $\bar{a}_t = \text{sigmoid}(-\omega_{\phi}(t))$
+
+![bg right invert width:600px ](snr1.png)
+
+<div class="reference">D. Kingma et al., 2021, Variational diffusion models.</div>
+
