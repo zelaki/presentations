@@ -31,32 +31,40 @@ style: |
 # Diffusion Models
 An Introduction
 
+<br>
+<br>
+
+<span style="font-size:50%"> Thodoris Kouzelis
 
 ---
 
 ### Learning to Generate by Denoising
 
-- ##### Diffusion models consist of two processes:
+- ###### Diffusion models consist of two processes:
 
-    - <span style="font-size:80%"> Forward process that gradually adds noise to input. 
-    - <span style="font-size:80%"> Reverse process that learns to generate data by denoising.
+    - <span style="font-size:70%"> Forward process that gradually adds noise to input. 
+    - <span style="font-size:70%"> Reverse process that learns to generate data by denoising.
 
 
-![width:1000px ](diff_proc.png)
+![width:1000px ](figs/diff_proc.png)
 
 ---
 
 ### Forward Process
-
-- ##### The definition of the forward process in T steps:
-
-
-    - <span style="font-size:80%">Posterior: $q(x_{1:T} | x_0 ) = \prod^T_{t=1} q(x_t \vert x_{t-1})$,
-    - <span style="font-size:80%">where $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
+<div style="text-align: left;">
 
 
+- ###### The definition of the forward process in T steps:
 
-![width:1000px ](forward.png)
+
+    - <span style="font-size:70%">Posterior: $q(x_{1:T} | x_0 ) = \prod^T_{t=1} q(x_t \vert x_{t-1})$,
+    - <span style="font-size:70%">where $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
+    - <span style="font-size:70%"> We will often denote $a_t = 1 - \beta_t$
+</div>
+
+<br>
+
+![width:1000px ](figs/forward.png)
 
 
 ---
@@ -64,31 +72,31 @@ An Introduction
 
 
 
-- <span style="font-size:80%">Markov Chain.</span>
-- <span style="font-size:80%">Generally $\beta_t \in (0,1)$ follows a fixed linearly increasing schedule.</span>
-- <span style="font-size:80%">As $T\rightarrow \infty$, $q(x_t|x_0) \approx \mathcal{N}(0,I)$.</span>
-- <span style="font-size:80%">If we set a large enough $T$ we can set $\beta_t\ll1$</span>. 
+- <span style="font-size:70%">Markov Chain.</span>
+- <span style="font-size:70%">Generally $\beta_t \in (0,1)$ follows a fixed linearly increasing schedule.</span>
+- <span style="font-size:70%">As $T\rightarrow \infty$, $q(x_t|x_0) \approx \mathcal{N}(0,I)$.</span>
+- <span style="font-size:70%">If we set a large enough $T$ we can set $\beta_t\ll1$</span>. 
 
 
-![width:1000px ](forward.png)
+![width:1000px ](figs/forward.png)
 
 ---
 ### Backward Process
 
--  <span style="font-size:80%">We have to approximate $q(x_{t-1} | x_t)$</span>. 
+-  <span style="font-size:70%">We have to approximate $q(x_{t-1} | x_t)$</span>. 
 
--  <span style="font-size:80%">We can use model $q(x_{t-1} | x_t)$ as a Normal Distribution is $\beta_t$ is small</span>. 
-![bg right width:600px ](backward.png)
+-  <span style="font-size:70%">We can model $q(x_{t-1} | x_t)$ as a Normal Distribution if $\beta_t$ is small</span>. 
+![bg right width:600px ](figs/backward.png)
 
 ---
 
 
 #### Definition of the Backward Process
 
--  <span style="font-size:80%">We will model the true reverce process $q(x_{t-1}|x_t)$ with $p_{\theta}(x_{t-1}|x_t)$</span>. 
+-  <span style="font-size:70%">We will model the true reverce process $q(x_{t-1}|x_t)$ with $p_{\theta}(x_{t-1}|x_t)$</span>. 
 
-- <span style="font-size:80%">$p_{\theta}(x_T) = \mathcal{N}(x_T; 0, I).$
-- <span style="font-size:80%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma_t^2 I)$
+- <span style="font-size:70%">$p_{\theta}(x_T) = \mathcal{N}(x_T; 0, I).$
+- <span style="font-size:70%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma_t^2 I)$
 ---
 
 
@@ -97,12 +105,12 @@ An Introduction
 
 #### What objective will we optimize?
 
--  <span style="font-size:80%">Maximize $p_{\theta}(x_0) ?$</span> 
+-  <span style="font-size:70%">Maximize $p_{\theta}(x_0) ?$</span> 
 
-- <span style="font-size:80%">$p_{\theta}(x_0) = \int p_{\theta}(x_{0:T})dx_{1:T}$ </span> 
+- <span style="font-size:70%">$p_{\theta}(x_0) = \int p_{\theta}(x_{0:T})dx_{1:T}$ </span> 
 
 
-![bg right width:600px ](manifold1.png)
+![bg right width:600px ](figs/manifold1.png)
 
 
 
@@ -110,27 +118,42 @@ An Introduction
 
 #### What objective will we optimize?
 
-- <span style="font-size:80%">Marginalizing oven all possile trajectories is intracable.
-![bg right width:600px ](trajextories1.png)
+- <span style="font-size:70%">Marginalizing oven all possile trajectories is intracable.
+![bg right width:600px ](figs/trajextories1.png)
 
-- <span style="font-size:80%">$p_{\theta}(x_0) = \int p_{\theta}(x_{0:T})\underline{dx_{1:T}}$ </span> 
+- <span style="font-size:70%">$p_{\theta}(x_0) = \int p_{\theta}(x_{0:T})\underline{dx_{1:T}}$ </span> 
 
+
+---
+#### What objective will we optimize?
+
+![bg right width:600px ](figs/trajextories1.png)
+
+
+
+- <span style="font-size:70%"> View $x_1, x_2, ... x_T$ as latent varables </span>.
+- <span style="font-size:70%"> And $x_0$ as the observed variable</span>.
+- <span style="font-size:70%"> Maximize an Evidence Lower Bound (ELBO)
 ---
 
 
 
-![bg  width:1200px ](vae_vdm1.png)
+
+
+![bg  width:1200px ](figs/vae_vdm1.png)
 
 
 ---
 
 
-##### Mininize the Evidence Lower Bound (ELBO)
-- <span style="font-size:60%">The evidence is quantified as the log likelihood of the observed data.
+##### Maximize the ELBO
+<div style="text-align: left;">
+
+- <span style="font-size:60%">  $\log p(x) \geq \text{ELBO}$ 
+<!-- - <span style="font-size:60%">The evidence  is quantified as the log likelihood of the observed data $\log p(x)$. -->
 - <span style="font-size:60%">Maximizing the ELBO becomes a proxy objective with which to optimize a latent variable model.
-![bg right invert width:300px ](vae1.png)
+![bg right invert width:300px ](figs/vae1.png)
 
-- <span style="font-size:60%"> $\log p(x) \geq \mathbb{E}_{q_{\phi}(z|x)}[log(\frac{p(x,z)}{q_{\phi}(z|x)})]$
 
 ---
 
@@ -141,7 +164,7 @@ section {
 }
 
 </style>
-## Derivation of the Evidence Lower Bound (ELBO)
+## Derivation of ELBO in VAEs
 
 $$
 \begin{align}\log p(x) &=  \int \log p(x) q_{\phi}(z|x)dz && (\int q(z|x) dz = 1)\\
@@ -159,11 +182,12 @@ $$
 
 ---
 
-###### Diffusion Models as Hierarchical VAEs
+##### Diffusion Models as Hierarchical VAEs
+<div style="text-align: left;">
+<span style="font-size:80%"> Two diffrences:
 
-- <span style="font-size:60%">  The latent dimension is exactly equal to the data dimension.
-- <span style="font-size:60%"> The the latent encoders $q$  not learned; it is pre-defined as a linear Gaussian model.
-- <span style="font-size:60%"> The Gaussian parameters of the latent encoders vary over time in such as the latent at final timestep T is $\mathcal{N}(0,I)$.
+- <span style="font-size:70%">  The latent dimension is exactly equal to the data dimension.
+- <span style="font-size:70%"> Encoders $q$  are not learned; **pre-defined** as a linear Gaussian model.
 ---
 
 <style scoped>
@@ -419,7 +443,7 @@ section {
 
 <div style="text-align: left;">
 
-Since $x_t$ is available as input to the model, we can choose the parameterization:
+We can choose the parameterization:
 </div>
 
 
@@ -472,7 +496,7 @@ $
 
 - Discard $\lambda_t$ and minimize a weighted version of the ELBO.
 
----
+<!-- ---
 
 <style>
 section:nth-of-type(2) h1 {
@@ -489,7 +513,7 @@ $\mathcal{L}_{Simple}(\theta) =
 \left[
   ||\epsilon - \epsilon_{\theta}(x_t) ||_2^2
 \right]
-$
+$ -->
 
 ---
 #### DDPM: Training and Sampling
@@ -502,7 +526,7 @@ $
 <br>
 <br>
 
-![bg invert width:1200px ](training_ddpm1.png)
+![bg invert width:1200px ](figs/training_ddpm1.png)
 
 ---
 <style scoped>
@@ -516,7 +540,6 @@ section {
 
 - A U-Net is used to estimate $\epsilon_{\theta}$
 - Time information added to U-Net with positional embeddings
-- Images scaled linearly to $[-1,1]$
 - Linear schudle from $\beta_1 = 10^{-4}$ to $\beta_T = 0.02$, with $T = 1000$
 - These hyperparameters enusre that $a_T \rightarrow 0$ and $q(x_T | x_0) \approx \mathcal{N}(0,1)$
 
@@ -542,7 +565,7 @@ section {
 <br>
 <br>
 
-![bg invert width:600px ](results_ddpm1.png)
+![bg invert width:600px ](figs/results_ddpm1.png)
 
 ---
 <style scoped>
@@ -567,7 +590,7 @@ section {
 
 <div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
 
-![bg right invert width:600px ](b_t.png)
+![bg right invert width:600px ](figs/b_t.png)
 
 
 ---
@@ -585,7 +608,7 @@ section {
 </div>
 <br>
 
-![width:1000px ](noise.png)
+![width:1000px ](figs/noise.png)
 
 <div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
 
@@ -627,8 +650,8 @@ img[alt~="left"] {
 </style>
 
 
-![right invert](cosine1.png)
-![left invert](rev_skip1.png)
+![right invert](figs/cosine1.png)
+![left invert](figs/rev_skip1.png)
 
 
 ---
@@ -657,7 +680,37 @@ section {
 
   - $\bar{a}_t = \text{sigmoid}(-\omega_{\phi}(t))$
 
-![bg right invert width:600px ](snr1.png)
+![bg right invert width:600px ](figs/snr1.png)
 
 <div class="reference">D. Kingma et al., 2021, Variational diffusion models.</div>
+
+
+---
+<style scoped>
+section {
+  font-size: 21px;
+}
+</style>
+### Latent Diffusion Models
+
+<br>
+<br>
+
+
+<div style="text-align: left;">
+
+
+- Run the diffusion in a latent space.
+- Given an image $x \in \mathbb{R}^{H \times W \times 3}$
+- Use an encoder $\mathcal{E}$ and extract $z = \mathcal{E}(x)$
+- Use a decoder $\mathcal{D}$ and retreve $\hat{x} = \mathcal{D}(z)$
+
+- $z \in \mathbb{R}^{h \times w \times c}$, with sampling rate $f = H/h = W/w = 2^m$, $m \in \mathbb{N}$.
+
+</div>
+
+![bg right  width:600px ](figs/ldm.png)
+
+
+<div class="reference">R. Rombach et al., 2022, High-Resolution Image Synthesis with Latent Diffusion Models</div>
 
