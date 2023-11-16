@@ -74,7 +74,7 @@ An Introduction
 
 - <span style="font-size:70%">Markov Chain.</span>
 - <span style="font-size:70%">Generally $\beta_t \in (0,1)$ follows a fixed linearly increasing schedule.</span>
-- <span style="font-size:70%">As $T\rightarrow \infty$, $q(x_t|x_0) \approx \mathcal{N}(0,I)$.</span>
+- <span style="font-size:70%">As $T\rightarrow \infty$, $q(x_T|x_0) \approx \mathcal{N}(0,I)$.</span>
 - <span style="font-size:70%">If we set a large enough $T$ we can set $\beta_t\ll1$</span>. 
 
 
@@ -88,7 +88,42 @@ An Introduction
 -  <span style="font-size:70%">We can model $q(x_{t-1} | x_t)$ as a Normal Distribution if $\beta_t$ is small</span>. 
 ![bg right width:600px ](figs/backward.png)
 
+- <span style="font-size:70%"> Why?
+
 ---
+
+
+
+#### Definition of the Backward Process
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+![bg width:1000px ](figs/b_before.png)
+
+---
+
+
+
+#### Definition of the Backward Process
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+![bg width:1000px ](figs/b_after.png)
+
+---
+
 
 
 #### Definition of the Backward Process
@@ -97,11 +132,10 @@ An Introduction
 
 - <span style="font-size:70%">$p_{\theta}(x_T) = \mathcal{N}(x_T; 0, I).$
 - <span style="font-size:70%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma_t^2 I)$
+- <span style="font-size:70%">$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod\limits_{t=1}^T p_{\theta}(x_{t-1}|x_t)$
+
+
 ---
-
-
-
-
 
 #### What objective will we optimize?
 
@@ -146,13 +180,13 @@ An Introduction
 ---
 
 
-##### Maximize the ELBO
+##### VAE and ELBO
 <div style="text-align: left;">
 
 - <span style="font-size:60%">  $\log p(x) \geq \text{ELBO}$ 
 <!-- - <span style="font-size:60%">The evidence  is quantified as the log likelihood of the observed data $\log p(x)$. -->
 - <span style="font-size:60%">Maximizing the ELBO becomes a proxy objective with which to optimize a latent variable model.
-![bg right invert width:300px ](figs/vae1.png)
+![bg right invert width:300px ](figs/vae_model.png)
 
 
 ---
@@ -173,12 +207,30 @@ $$
 &=\mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{p(z|x)}] && (\text{Chain rule})\\
 &=\mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{q_{\phi}(z|x)}] + \mathbb{E}_{q_{\phi}(z|x)}[\log \frac{q_{\phi}(z|x)}{p(z|x)}] && (\text{Multiple by } \frac{q_{\phi}(z|x)}{q_{\phi}(z|x)} \text{ and split})\\
 &=\mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{q_{\phi}(z|x)}] + D_{KL}(q_{\phi}(z|x)||p(z|x)) && (\text{By definition of } D_{KL}) \\
-&\geq \mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{q_{\phi}(z|x)}] && (D_{KL} > 0)
+&\geq \underbrace{\mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{q_{\phi}(z|x)}]}_{\text{ELBO}} && (D_{KL} > 0)
 
 
 
 \end{align}
 $$
+
+---
+
+
+
+##### Hierarchical VAEs
+
+<div style="text-align: left;">
+
+- <span style="font-size:60%"> VAE with two latent variables $z_1, z_2$ 
+
+
+
+- <span style="font-size:60%">  $\log p(x) \geq \mathbb{E}_{q_{\phi}(z_1, z_2|x)}[\log \frac{p(x,z_1,z_2)}{q_{\phi}(z_1,z_2|x)}]$
+
+![bg right invert width:500px ](figs/hierarchical_vae.png)
+
+
 
 ---
 
