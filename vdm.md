@@ -39,12 +39,16 @@ An Introduction
 ---
 
 ### Learning to Generate by Denoising
+<div style="text-align: left;">
 
 - ###### Diffusion models consist of two processes:
 
     - <span style="font-size:70%"> Forward process that gradually adds noise to input. 
     - <span style="font-size:70%"> Reverse process that learns to generate data by denoising.
 
+</div>
+
+<br>
 
 ![width:1000px ](figs/diff_proc.png)
 
@@ -57,7 +61,7 @@ An Introduction
 - ###### The definition of the forward process in T steps:
 
 
-    - <span style="font-size:70%">Posterior: $q(x_{1:T} | x_0 ) = \prod^T_{t=1} q(x_t \vert x_{t-1})$,
+    - <span style="font-size:70%">Posterior: $q(x_{1:T} | x_0 ) = \prod\limits^T_{t=1} q(x_t \vert x_{t-1})$,
     - <span style="font-size:70%">where $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
     - <span style="font-size:70%"> We will often denote $a_t = 1 - \beta_t$
 </div>
@@ -72,7 +76,7 @@ An Introduction
 
 
 
-- <span style="font-size:70%">Markov Chain.</span>
+- <span style="font-size:70%">Markov Chain: $x_t$ only depends on $x_{t-1}$.</span>
 - <span style="font-size:70%">Generally $\beta_t \in (0,1)$ follows a fixed linearly increasing schedule.</span>
 - <span style="font-size:70%">As $T\rightarrow \infty$, $q(x_T|x_0) \approx \mathcal{N}(0,I)$.</span>
 - <span style="font-size:70%">If we set a large enough $T$ we can set $\beta_t\ll1$</span>. 
@@ -83,9 +87,9 @@ An Introduction
 ---
 ### Backward Process
 
--  <span style="font-size:70%">We have to approximate $q(x_{t-1} | x_t)$</span>. 
+-  <span style="font-size:70%">We want to approximate $q(x_{t-1} | x_t)$</span>. 
 
--  <span style="font-size:70%">We can model $q(x_{t-1} | x_t)$ as a Normal Distribution if $\beta_t$ is small</span>. 
+-  <span style="font-size:70%">We can model $q(x_{t-1} | x_t)$ as a Gaussian Distribution if $\beta_t$ is small</span>. 
 ![bg right width:600px ](figs/backward.png)
 
 - <span style="font-size:70%"> Why?
@@ -94,7 +98,7 @@ An Introduction
 
 
 
-#### Definition of the Backward Process
+##### Why can we model $q(x_{t-1}|x_t)$ as a Gaussian?
 <br>
 <br>
 <br>
@@ -110,7 +114,7 @@ An Introduction
 
 
 
-#### Definition of the Backward Process
+##### Why can we model $q(x_{t-1}|x_t)$ as a Gaussian?
 <br>
 <br>
 <br>
@@ -131,7 +135,7 @@ An Introduction
 -  <span style="font-size:70%">We will model the true reverce process $q(x_{t-1}|x_t)$ with $p_{\theta}(x_{t-1}|x_t)$</span>. 
 
 - <span style="font-size:70%">$p_{\theta}(x_T) = \mathcal{N}(x_T; 0, I).$
-- <span style="font-size:70%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma_t^2 I)$
+- <span style="font-size:70%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma(x_t,t)^2 I)$
 - <span style="font-size:70%">$p_{\theta}(x_{0:T}) = p_{\theta}(x_T) \prod\limits_{t=1}^T p_{\theta}(x_{t-1}|x_t)$
 
 
@@ -152,7 +156,7 @@ An Introduction
 
 #### What objective will we optimize?
 
-- <span style="font-size:70%">Marginalizing oven all possile trajectories is intracable.
+- <span style="font-size:70%">Marginalizing over all possible trajectories is intractable.
 ![bg right width:600px ](figs/trajextories1.png)
 
 - <span style="font-size:70%">$p_{\theta}(x_0) = \int p_{\theta}(x_{0:T})\underline{dx_{1:T}}$ </span> 
@@ -198,7 +202,7 @@ section {
 }
 
 </style>
-## Derivation of ELBO in VAEs
+# Derivation of ELBO in VAEs
 
 $$
 \begin{align}\log p(x) &=  \int \log p(x) q_{\phi}(z|x)dz && (\int q(z|x) dz = 1)\\
@@ -217,6 +221,35 @@ $$
 ---
 
 
+<style scoped>
+section {
+  font-size: larger;
+}
+
+</style>
+# Derivation of ELBO in VAEs
+
+<br>
+<br>
+
+$$
+\begin{align}
+\text{ELBO} &= \mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x,z)}{q_{\phi}(z|x)}]   \\
+
+&= \mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(x|z)p(z)}{q_{\phi}(z|x)}] && (\text{Chain Rule}) \\
+
+&= \mathbb{E}_{q_{\phi}(z|x)}[\log p(x|z)] +
+   \mathbb{E}_{q_{\phi}(z|x)}[\log \frac{p(z)}{q_{\phi}(z|x)}] && \\
+&= \underbrace{\mathbb{E}_{q_{\phi}(z|x)}[\log p(x|z)]}_{\text{reconstruction}} -
+   \underbrace{D_{KL}(q_{\phi}(z|x) \; || \; p(z))}_{\text{prior matching}} && (\text{By definition of } D_{KL})
+
+\end{align}
+
+$$
+<div style="text-align: left;">
+
+
+---
 
 ##### Hierarchical VAEs
 
@@ -363,7 +396,7 @@ section {
 }
 
 </style>
-###  Reparameterization trick 
+###   Reparameterization trick 
 
 <div style="text-align: left;">
 
@@ -387,7 +420,7 @@ x_t &= \sqrt{a_t}x_{t-1} + \sqrt{1-a_t}e^*_{t-1} \\
  &= \sqrt{a_t} \left( \sqrt{a_{t-1}}x_{t-2} + \sqrt{1-a_{t-1}} e_{t-2}^* \right) + \sqrt{1-a_t}e^*_{t-1} \\ &= \sqrt{a_t a_{t-1}}x_{t-2} + \sqrt{a_t-a_ta_{t-1}}e^*_{t-2} + \sqrt{1-a_t}e^*_{t-1} \\
 &= \sqrt{a_t a_{t-1}}x_{t-2} + \sqrt{1 - a_ta_{t-1}} e_{t-2} &&  (\text{Sum of Gaussians})  \\
 &=  \; \; \; ... \\
-&= \sqrt{\bar{a_t}}x_0 + \sqrt{1-\bar{a_t}}e_0
+&= \sqrt{\bar{a_t}}x_0 + \sqrt{1-\bar{a_t}}e_0 && (\bar{a}_t = \prod\limits_{i=1}^t a_i)
 
 \end{align}
 $$
@@ -567,20 +600,17 @@ $\mathcal{L}_{Simple}(\theta) =
 \right]
 $ -->
 
----
-#### DDPM: Training and Sampling
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-![bg invert width:1200px ](figs/training_ddpm1.png)
 
 ---
+$$
+\begin{array}{|c|c|} \hline  \text { Training } &  \text { Sampling } \\ \hline \begin{array}{ll} \text { 1: }  \text { repeat } \\ \text { 2: } \quad \mathbf{x}_0 \sim q\left(\mathbf{x}_0\right) \\ \text { 3: } \quad t \sim \operatorname{Uniform}(\{1, \ldots, T\}) \\ \text { 4: } \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 5: } \quad \text { Take gradient descent step on } \\ \quad \quad \nabla_\theta\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2 \\ \text { 6: until converged } \end{array} & \begin{array}{l} \text { 1: } \mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 2: for } t=T, \ldots, 1 \text { do } \\ \text { 3: } \quad \mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \text { if } t>1, \text { else } \mathbf{z}=\mathbf{0} \\ \text { 4: } \quad \mathbf{x}_{t, 1}=\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta\left(\mathbf{x}_t, t\right)\right)+\sigma_t \mathbf{z} \\ \text { 5: end for } \\ \text { 6: return } \mathbf{x}_0 \end{array} \\ \hline \end{array}
+
+
+$$
+
+
+---
+
 <style scoped>
 section {
   font-size: 26px;
@@ -593,7 +623,6 @@ section {
 - A U-Net is used to estimate $\epsilon_{\theta}$
 - Time information added to U-Net with positional embeddings
 - Linear schudle from $\beta_1 = 10^{-4}$ to $\beta_T = 0.02$, with $T = 1000$
-- These hyperparameters enusre that $a_T \rightarrow 0$ and $q(x_T | x_0) \approx \mathcal{N}(0,1)$
 
 ---
 <style scoped>
