@@ -25,11 +25,10 @@ style: |
     margin: 0;
     }
 
-
 ---
 
 # Diffusion Models
-An Introduction
+###### An Introduction
 
 <br>
 <br>
@@ -37,6 +36,24 @@ An Introduction
 <span style="font-size:50%"> Thodoris Kouzelis
 
 ---
+
+
+
+<!-- ### Diffusion Models
+###### Contents
+
+<div style="text-align: left;">
+
+
+ - <span style="font-size:70%"> Definition of Forward and Backward process.
+ - <span style="font-size:70%"> What is the Evidence Lower Bound ?
+ - <span style="font-size:70%"> How are Diffusion Models trained ?
+- <span style="font-size:70%"> Diffrenc
+
+---
+ -->
+
+
 
 ### Learning to Generate by Denoising
 <div style="text-align: left;">
@@ -406,6 +423,7 @@ section {
  $x = \mu + \sigma \epsilon$ with $\epsilon \sim \mathcal{N}(0, I)$
 
 
+
 ---
 
 
@@ -546,7 +564,9 @@ $
 section {
   font-size: 22px;
 }
+
 </style>
+
 ### Simplified Loss
 
 <div style="text-align: left;">
@@ -625,6 +645,7 @@ $ -->
 
 
 ---
+
 $$
 \begin{array}{|c|c|} \hline  \text { Training } &  \text { Sampling } \\ \hline \begin{array}{ll} \text { 1: }  \text { repeat } \\ \text { 2: } \quad \mathbf{x}_0 \sim q\left(\mathbf{x}_0\right) \\ \text { 3: } \quad t \sim \operatorname{Uniform}(\{1, \ldots, T\}) \\ \text { 4: } \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 5: } \quad \text { Take gradient descent step on } \\ \quad \quad \nabla_\theta\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2 \\ \text { 6: until converged } \end{array} & \begin{array}{l} \text { 1: } \mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 2: for } t=T, \ldots, 1 \text { do } \\ \text { 3: } \quad \mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \text { if } t>1, \text { else } \mathbf{z}=\mathbf{0} \\ \text { 4: } \quad \mathbf{x}_{t, 1}=\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta\left(\mathbf{x}_t, t\right)\right)+\sigma_t \mathbf{z} \\ \text { 5: end for } \\ \text { 6: return } \mathbf{x}_0 \end{array} \\ \hline \end{array}
 
@@ -817,6 +838,35 @@ section {
 
 
 <div class="reference">R. Rombach et al., 2022, High-Resolution Image Synthesis with Latent Diffusion Models</div>
+
+
+
+
+
+
+
+---
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### to be continued . . . 
+
+
+
+- Score-Based Generative Models
+- Fast Sampleing (DDIM)
+- Conditional diffusion models
+  
+  - Classifier Guidance
+  - Classifier Free Guidance
+
+
+- Connecting DDPM and Score models under the SDE framework  
+</div>
+
+![bg right  width:600px ](figs/final1.png)
 
 
 
