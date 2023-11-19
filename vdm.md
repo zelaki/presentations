@@ -377,7 +377,6 @@ section {
 </style>
 ### What objective will we optimize?
 
-- In this derivation the bulk of the cost lies in $L_{t-1}$.
 - If we find a closed form for  $q(x_{t-1}|x_t, x_0)$ we can compute the KL Divergance and maximize the ELBO.
 - By Bayes rule we have $q(x_{t-1}|x_t,x_0) = \frac{q(x_t|x_{t-1},x_0) q(x_{t-1}|x_0)}{q(x_t|x_0)}$.
 
@@ -390,17 +389,40 @@ section {
 
 
 
+
 <style scoped>
 section {
   font-size: 26px;
 }
 
 </style>
-###   Reparameterization trick 
+### Reparametriztion Trick
+
+- Write a random variable as a deterministic function of a noise variable.
+- Optimize through gradient descent.
+
+- In the case of Gaussian random variable, $x \sim \mathcal{N}(\mu, \sigma^2)$ can be writen as:
+
+ $x = \mu + \sigma \epsilon$ with $\epsilon \sim \mathcal{N}(0, I)$
+
+
+---
+
+
+
+
+
+<style scoped>
+section {
+  font-size: 24px;
+}
+
+</style>
+###   What about $q(x_t|x_0)$?
 
 <div style="text-align: left;">
 
- Under the reparameterization trick, samples $x_t \sim q(x_t|x_{t-1})$ can be rewritten as:
+ Under the reparameterization trick, samples $x_t \sim q(x_t|x_{t-1})$ can be written as:
 
 </div>
 
@@ -412,7 +434,7 @@ $$
 
 <div style="text-align: left;">
 
-Thus, $q(x_t|x_0)$ can be recursively derived through repeated applications of the reparameterization trick. Assuming acess to $2T$ random variables $\{ e_t^*, e_t\}_{t=0}^T \sim \mathcal{N}(0,1)$.
+Thus, $q(x_t|x_0)$ can be recursively derived through repeated applications of the reparameterization trick. Assuming access to $2T$ random variables $\{ e_t^*, e_t\}_{t=0}^T \sim \mathcal{N}(0,1)$.
 
 $$
 \begin{align}
@@ -432,7 +454,7 @@ section {
 }
 
 </style>
-### Now we can calculate the form of $q(x_{t-1}|x_t, x_0)$ . . .  
+### Now we can calculate $q(x_{t-1}|x_t, x_0)$ . . .  
 
 $$
 \begin{align}
@@ -452,10 +474,10 @@ $$
 
 <style scoped>
 section {
-  font-size: 26px;
+  font-size: 30px;
 }
 </style>
-### . . . and maximize the ELBO by minimizing the $D_{KL}$
+#### . . . and maximize the ELBO by minimizing the $D_{KL}$
 <br>
 </br>
 
@@ -474,12 +496,13 @@ $$
 $$
 
 <div style="text-align: left;">
+<br>
 
-We want to optimize $µ_{\theta}(x_t, t)$ to matches $\mu_q(x_t, x_0)$.
+- Optimize $µ_{\theta}(x_t, t)$ to matches $\mu_q(x_t, x_0)$.
 
 ---
 
-
+<!-- 
 <style scoped>
 section {
   font-size: 26px;
@@ -516,7 +539,7 @@ $
 \right]
 $
 
----
+--- -->
 
 
 <style scoped>
@@ -534,7 +557,7 @@ We can choose the parameterization:
 
 $
 x_0 = \frac
-  {x_t = \sqrt{1-\bar{a}_t}\epsilon_0}
+  {x_t + \sqrt{1-\bar{a}_t}\epsilon_0}
   {\sqrt{\bar{a}_t}}
 $
 
@@ -666,7 +689,7 @@ section {
 - $\beta_t$ and $\bar{\beta}_t$ almost equal except near $t = 0$
 
 
-- Learn to intertpolate $\beta_t$ and $\bar{\beta}_t$ 
+- Learn to intertpolate $\beta_t$ and $\bar{\beta}_t$:
   - $\sigma^2_t = \exp(v \log \beta_t + (1 − v) \log \bar{\beta}_t)$
 
 <div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
@@ -794,4 +817,25 @@ section {
 
 
 <div class="reference">R. Rombach et al., 2022, High-Resolution Image Synthesis with Latent Diffusion Models</div>
+
+
+
+---
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+### Questions
+
+<br>
+<br>
+
+
+- Is there a semantic latent space?
+</div>
+
+![bg right  width:600px ](figs/final1.png)
+
+
 
