@@ -78,8 +78,9 @@ style: |
 - ###### The definition of the forward process in T steps:
 
 
+    - <span style="font-size:70%"> $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
     - <span style="font-size:70%">Posterior: $q(x_{1:T} | x_0 ) = \prod\limits^T_{t=1} q(x_t \vert x_{t-1})$,
-    - <span style="font-size:70%">where $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
+
     - <span style="font-size:70%"> We will often denote $a_t = 1 - \beta_t$
 </div>
 
@@ -204,9 +205,11 @@ style: |
 ##### VAE and ELBO
 <div style="text-align: left;">
 
-- <span style="font-size:60%">  $\log p(x) \geq \text{ELBO}$ 
+- <span style="font-size:60%">  $p(x) = \int p(x,z)dz\;$ is intractable.
+
 <!-- - <span style="font-size:60%">The evidence  is quantified as the log likelihood of the observed data $\log p(x)$. -->
-- <span style="font-size:60%">Maximizing the ELBO becomes a proxy objective with which to optimize a latent variable model.
+- <span style="font-size:60%"> Find  $ELBO$ such $p(x) \geq ELBO$.
+- <span style="font-size:60%"> Optimize $ELBO$ as a proxy.
 ![bg right invert width:300px ](figs/vae_model.png)
 
 
@@ -620,31 +623,32 @@ $
 <div style="text-align: left;">
 
 
-- However, $\lambda_t$  is often very large for small t’s.
+- However, $\lambda_t$  is very large for small t’s.
 
 - Discard $\lambda_t$ and minimize a weighted version of the ELBO.
 
-<!-- ---
-
-<style>
-section:nth-of-type(2) h1 {
-  position: absolute;
-  top: 10px; /* Adjust as needed */
-  left: 50%;
-  transform: translateX(-50%);
-}
-</style>
-
-### Simplified Loss
-$\mathcal{L}_{Simple}(\theta) =
-\mathbb{E}_{t,x_0,\epsilon}
-\left[
-  ||\epsilon - \epsilon_{\theta}(x_t) ||_2^2
-\right]
-$ -->
 
 
 ---
+
+
+#### $\lambda_t$ is large for small $t$
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+![bg invert width:600px ](figs/lambda.png)
+
+---
+
+
 
 $$
 \begin{array}{|c|c|} \hline  \text { Training } &  \text { Sampling } \\ \hline \begin{array}{ll} \text { 1: }  \text { repeat } \\ \text { 2: } \quad \mathbf{x}_0 \sim q\left(\mathbf{x}_0\right) \\ \text { 3: } \quad t \sim \operatorname{Uniform}(\{1, \ldots, T\}) \\ \text { 4: } \quad \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 5: } \quad \text { Take gradient descent step on } \\ \quad \quad \nabla_\theta\left\|\boldsymbol{\epsilon}-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}, t\right)\right\|^2 \\ \text { 6: until converged } \end{array} & \begin{array}{l} \text { 1: } \mathbf{x}_T \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \\ \text { 2: for } t=T, \ldots, 1 \text { do } \\ \text { 3: } \quad \mathbf{z} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}) \text { if } t>1, \text { else } \mathbf{z}=\mathbf{0} \\ \text { 4: } \quad \mathbf{x}_{t, 1}=\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta\left(\mathbf{x}_t, t\right)\right)+\sigma_t \mathbf{z} \\ \text { 5: end for } \\ \text { 6: return } \mathbf{x}_0 \end{array} \\ \hline \end{array}
@@ -777,9 +781,20 @@ img[alt~="left"] {
 
 ![right invert](figs/cosine1.png)
 ![left invert](figs/rev_skip1.png)
+<div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
 
 
 ---
+![invert](figs/iddpm_res.png)
+
+<div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
+
+
+---
+
+
+
+
 <style scoped>
 section {
   font-size: 21px;
@@ -801,6 +816,7 @@ section {
 - Define $\text{SNR}=\frac{\mu^2}{\sigma^2} = \frac{\bar{a}_t}{1-\bar{a}_t}$
 
 - Model SNR with a NN:
+  - Monotonically increasing NN: $\omega_{\phi}$
   - $\text{SNR}(t) = \exp(-\omega_{\phi}(t))$
 
   - $\bar{a}_t = \text{sigmoid}(-\omega_{\phi}(t))$
