@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="/home/theokouz/athenarc/study_group/dpm/presentation_dpm/figs/l_t_1.png" alt="Diffusion Models" width="600"/>
+  <img src="figs/l_t_1.png" alt="Diffusion Models" width="600"/>
 </p>
 
 This repository contains a presentation on Diffusion Models created using [MARP](https://marp.app/).
