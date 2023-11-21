@@ -71,11 +71,12 @@ style: |
 
 ---
 
-### Forward Process
+
+#### Forward Process
 <div style="text-align: left;">
 
 
-- ###### The definition of the forward process in T steps:
+- ###### The definition of the forward process in $T$ steps:
 
 
     - <span style="font-size:70%"> $q(x_t \vert x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
@@ -84,12 +85,12 @@ style: |
     - <span style="font-size:70%"> We will often denote $a_t = 1 - \beta_t$
 </div>
 
-<br>
 
 ![width:1000px ](figs/forward.png)
 
 
 ---
+
 ### Characteristics of the forward process
 
 
@@ -150,7 +151,7 @@ style: |
 
 #### Definition of the Backward Process
 
--  <span style="font-size:70%">We will model the true reverce process $q(x_{t-1}|x_t)$ with $p_{\theta}(x_{t-1}|x_t)$</span>. 
+-  <span style="font-size:70%">We will model the true reverse process $q(x_{t-1}|x_t)$ with $p_{\theta}(x_{t-1}|x_t)$</span>. 
 
 - <span style="font-size:70%">$p_{\theta}(x_T) = \mathcal{N}(x_T; 0, I).$
 - <span style="font-size:70%">$p_{\theta}(x_{t-1}|x_t) = \mathcal{N}(x_{t-1}; \mu_{\theta}(x_t,t), \sigma(x_t,t)^2 I)$
@@ -289,7 +290,7 @@ $$
 
 ##### Diffusion Models as Hierarchical VAEs
 <div style="text-align: left;">
-<span style="font-size:80%"> Two diffrences:
+<span style="font-size:80%"> Two differences:
 
 - <span style="font-size:70%">  The latent dimension is exactly equal to the data dimension.
 - <span style="font-size:70%"> Encoders $q$  are not learned; **pre-defined** as a linear Gaussian model.
@@ -397,7 +398,7 @@ section {
 </style>
 ### What objective will we optimize?
 
-- If we find a closed form for  $q(x_{t-1}|x_t, x_0)$ we can compute the KL Divergance and maximize the ELBO.
+- If we find a closed form for  $q(x_{t-1}|x_t, x_0)$ we can compute the KL Divergence and maximize the ELBO.
 - By Bayes rule we have $q(x_{t-1}|x_t,x_0) = \frac{q(x_t|x_{t-1},x_0) q(x_{t-1}|x_0)}{q(x_t|x_0)}$.
 
  - We already know that $q(x_t|x_{t-1},x_0) = q(x_t|x_{t-1}) = \mathcal{N}(x_t ; \sqrt{a_t}x_{t},(1-a_t)I)$
@@ -416,12 +417,12 @@ section {
 }
 
 </style>
-### Reparametriztion Trick
+### Reparametrization Trick
 
 - Write a random variable as a deterministic function of a noise variable.
 - Optimize through gradient descent.
 
-- In the case of Gaussian random variable, $x \sim \mathcal{N}(\mu, \sigma^2)$ can be writen as:
+- In the case of Gaussian random variable, $x \sim \mathcal{N}(\mu, \sigma^2)$ can be written as:
 
  $x = \mu + \sigma \epsilon$ with $\epsilon \sim \mathcal{N}(0, I)$
 
@@ -632,7 +633,7 @@ $
 ---
 
 
-#### $\lambda_t$ is large for small $t$
+###### $\lambda_t$ is large for small $t$
 
 
 <br>
@@ -670,7 +671,7 @@ section {
 
 - A U-Net is used to estimate $\epsilon_{\theta}$
 - Time information added to U-Net with positional embeddings
-- Linear schudle from $\beta_1 = 10^{-4}$ to $\beta_T = 0.02$, with $T = 1000$
+- Linear schedule from $\beta_1 = 10^{-4}$ to $\beta_T = 0.02$, with $T = 1000$
 
 ---
 <style scoped>
@@ -714,7 +715,7 @@ section {
 - $\beta_t$ and $\bar{\beta}_t$ almost equal except near $t = 0$
 
 
-- Learn to intertpolate $\beta_t$ and $\bar{\beta}_t$:
+- Learn to interpolate $\beta_t$ and $\bar{\beta}_t$:
   - $\sigma^2_t = \exp(v \log \beta_t + (1 − v) \log \bar{\beta}_t)$
 
 <div class="reference">Alex Nichol et al., 2021, Improved Denoising Diffusion Probabilistic Models</div>
@@ -826,7 +827,7 @@ section {
 <div class="reference">D. Kingma et al., 2021, Variational diffusion models.</div>
 
 
----
+<!-- ---
 <style scoped>
 section {
   font-size: 21px;
@@ -855,7 +856,7 @@ section {
 
 <div class="reference">R. Rombach et al., 2022, High-Resolution Image Synthesis with Latent Diffusion Models</div>
 
-
+ -->
 
 
 
@@ -872,7 +873,7 @@ section {
 
 
 - Score-Based Generative Models
-- Fast Sampleing (DDIM)
+- Fast Sampling (DDIM)
 - Conditional diffusion models
   
   - Classifier Guidance
