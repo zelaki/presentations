@@ -10,6 +10,9 @@ style: |
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
+  section {
+    line-height: 0.7; /* Adjust this value as needed */
+  }
   .reference {
     position: absolute;
     bottom: 10px;
@@ -169,6 +172,7 @@ style: |
 <div style="text-align: left;">
 
 - <span style="font-size:70%"> Let $J_\phi: T_x M \rightarrow T_{\phi(x)} N$.
+
 - <span style="font-size:70%"> Then $J_\phi = U \Sigma V^*$:
   - <span style="font-size:70%"> $u_1, ..., u_m$ of $U$ yield an orthonormal basis of $T_x M$
   - <span style="font-size:70%"> $v1, ..., v_n$ of $V$ yield an orthonormal basis of $T_{\phi(x)} N$
@@ -203,3 +207,30 @@ large variability of the corresponding $u \in T_h$
 * <span style="font-size:50%"> The corresponding directions in $T_h$ (left singular values): $u_i = \frac{1}{\sigma_i} J_x v_i$
 
 ![bg right width:500px ](figs/riemannian.png)
+
+
+
+---
+
+##### Editing
+
+<div style="text-align: left;">
+
+<span style="font-size:50%"> 1. Map a sample in X into a
+tangent space $T_h$ in H.
+
+<span style="font-size:50%"> 2. Choose a direction in $T_h$.
+
+<span style="font-size:50%"> 3. Find its corresponding direction in X using $J_x^{-1}$.
+
+<span style="font-size:50%"> 4. Edit the sample by adding the discovered direction.
+
+<span style="font-size:50%"> 5. Map the edited sample to a new tangent space $T_h'$ in $\mathcal{H}$ for multiple editing.
+
+<span style="font-size:50%"> 6. Project to new tangent and goto 3.
+
+
+
+![bg right width:500px ](figs/riemannian.png)
+
+
