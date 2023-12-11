@@ -234,3 +234,22 @@ tangent space $T_h$ in H.
 ![bg right width:500px ](figs/riemannian.png)
 
 
+
+--- 
+
+
+##### In a new version of the paper 
+
+<div style="text-align: left;">
+
+<span style="font-size:50%"> 1. Map a sample in X into a
+tangent space $T_h$ in H.
+
+<span style="font-size:50%"> 2. Choose a direction $u_i \in T_h$.
+
+<span style="font-size:50%"> 3. Find its corresponding direction $v_i \in T_x$ using $J_x^{-1}$.
+
+<span style="font-size:50%"> **4. $\mathbb{\hat{x_t} = x_t + \gamma [e_\theta(x_t + v_i) - e_\theta(x_t)]}$**
+
+![bg right width:500px ](figs/riemannian.png)
+
