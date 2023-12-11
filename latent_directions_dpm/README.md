@@ -156,7 +156,50 @@ style: |
 - <span style="font-size:70%"> A linear approximation of smooth maps on tangent spaces.
 - <span style="font-size:70%">  Let, $\phi: M \rightarrow N$
 - <span style="font-size:70%"> For $x \in M$, the *Jacobian* of $\phi$ at $x$ is a linear map between their tangent spaces:
-  $d\phi_x:T_x M \rightarrow T_{\phi(x)} N$
+  $J_\phi:T_x M \rightarrow T_{\phi(x)} N$
 
 
 ![bg right width:500px ](figs/Pushforward.png)
+
+---
+
+##### SVD of the Jacobian
+
+
+<div style="text-align: left;">
+
+- <span style="font-size:70%"> Let $J_\phi: T_x M \rightarrow T_{\phi(x)} N$.
+- <span style="font-size:70%"> Then $J_\phi = U \Sigma V^*$:
+  - <span style="font-size:70%"> $u_1, ..., u_m$ of $U$ yield an orthonormal basis of $T_x M$
+  - <span style="font-size:70%"> $v1, ..., v_n$ of $V$ yield an orthonormal basis of $T_{\phi(x)} N$
+  - <span style="font-size:70%"> $v_i$ directions in the input space that are most influential for the changes in the output space.
+
+
+---
+
+###### Understanding the Latent Space of Diffusion Models through the Lens of Riemannian Geometry
+
+<div style="text-align: left;">
+
+
+- <span style="font-size:70%"> Main Ideas:
+  * <span style="font-size:70%"> $\mathcal{H}$ (bottleneck) exibits local linearity but $\mathcal{X}$ doesnt.
+  * <span style="font-size:70%"> The unet encoder is a function $f: \mathcal{X} \rightarrow \mathcal{H}$
+  * <span style="font-size:70%"> Let $T_x$ and $T_h$ be tangat spaces at $x\in \mathcal{X}$ and $h \in \mathcal{H}$ respectivly.
+  * <span style="font-size:70%"> The Jacobian $J_x = \nabla_x h$ is a linear map, $J_x: T_x \rightarrow T_h$
+
+![bg right width:500px ](figs/riemannian.png)
+
+---
+
+###### Understanding the Latent Space of Diffusion Models through the Lens of Riemannian Geometry
+
+<div style="text-align: left;">
+
+
+* <span style="font-size:50%"> The right singular values $v_i$ of $J_x$ give $n$ semantic directions in $T_x$ that show
+large variability of the corresponding $u \in T_h$
+
+* <span style="font-size:50%"> The corresponding directions in $T_h$ (left singular values): $u_i = \frac{1}{\sigma_i} J_x v_i$
+
+![bg right width:500px ](figs/riemannian.png)
