@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: uncover
-class: invert
+# class: invert
 math: mathjax
 
 style: |
@@ -71,9 +71,9 @@ style: |
 ---
 
 
-##### Diffusion Models Already Have A Semantic Latent Space 
+###### Diffusion Models Already Have A Semantic Latent Space 
 
-<br>
+
 
 
 <div style="text-align: left;">
@@ -85,6 +85,11 @@ style: |
   - <span style="font-size:50%"> Scaling $\Delta h$ controls the magnitude of attribute chang
 
   - <span style="font-size:50%"> Adding multiple ∆h manipulates the corresponding multiple attribute
+
+</div>
+
+![bg right width:600px ](figs/unet.png)
+
 
 ---
 
@@ -131,3 +136,27 @@ style: |
 
 
 
+##### Preliminaries
+
+
+<div style="text-align: left;">
+
+
+- <span style="font-size:70%"> Push-Forward
+<!-- - <span style="font-size:70%"> Metric Pullback -->
+- <span style="font-size:70%"> SVD of a Jacobian
+
+![bg right width:600px ](figs/Pushforward.png)
+
+
+---
+
+##### Push-Forward
+
+- <span style="font-size:70%"> A linear approximation of smooth maps on tangent spaces.
+- <span style="font-size:70%">  Let, $\phi: M \rightarrow N$
+- <span style="font-size:70%"> For $x \in M$, the *Jacobian* of $\phi$ at $x$ is a linear map between their tangent spaces:
+  $d\phi_x:T_x M \rightarrow T_{\phi(x)} N$
+
+
+![bg right width:500px ](figs/Pushforward.png)
