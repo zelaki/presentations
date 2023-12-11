@@ -5,7 +5,7 @@
   <img src="figs/l_t_1.png" alt="Diffusion Models" width="600"/>
 </p>
 
-This repository contains a presentation on Diffusion Models created using [MARP](https://marp.app/).
+This repository contains presentations on Diffusion Models created using [MARP](https://marp.app/).
 
 
 ## View and Edit the Presentation
