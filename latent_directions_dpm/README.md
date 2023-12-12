@@ -11,7 +11,7 @@ style: |
     gap: 1rem;
   }
   section {
-    line-height: 0.7; /* Adjust this value as needed */
+    line-height: 0.8; /* Adjust this value as needed */
   }
   .reference {
     position: absolute;
@@ -187,9 +187,13 @@ style: |
 
 
 - <span style="font-size:70%"> Main Ideas:
+
   * <span style="font-size:70%"> $\mathcal{H}$ (bottleneck) exibits local linearity but $\mathcal{X}$ doesnt.
+
   * <span style="font-size:70%"> The unet encoder is a function $f: \mathcal{X} \rightarrow \mathcal{H}$
+
   * <span style="font-size:70%"> Let $T_x$ and $T_h$ be tangat spaces at $x\in \mathcal{X}$ and $h \in \mathcal{H}$ respectivly.
+  
   * <span style="font-size:70%"> The Jacobian $J_x = \nabla_x h$ is a linear map, $J_x: T_x \rightarrow T_h$
 
 ![bg right width:500px ](figs/riemannian.png)
@@ -252,4 +256,64 @@ tangent space $T_h$ in H.
 <span style="font-size:50%"> **4. $\mathbb{\hat{x_t} = x_t + \gamma [e_\theta(x_t + v_i) - e_\theta(x_t)]}$**
 
 ![bg right width:500px ](figs/riemannian.png)
+
+
+
+
+---
+
+
+
+##### Important Notes
+
+<div style="text-align: left;">
+
+* <span style="font-size:70%"> The editing is performed in a single timestep.
+
+<br>
+<br>
+
+</div>
+
+![ width:1000px ](figs/pull_edit.png)
+
+
+
+---
+
+##### Important Notes
+
+<div style="text-align: left;">
+
+
+
+* <span style="font-size:70%">  They vectorize $x\in \mathcal{X}$ and $h \in \mathcal{H}$, thus:
+
+  * <span style="font-size:70%">  $x \in \mathcal{X} \subset R^n$, $n=256 \cdot 256 \cdot 3$  
+  * <span style="font-size:70%">  $h \in \mathcal{H} \subset R^m$, $m=8 \cdot 8 \cdot 1280$
+  * <span style="font-size:70%"> Thus the Jacobian $J \in R^{m \times n}$.
+
+ * <span style="font-size:70%"> Could we keep the tensorial structure and do HOSVD?
+
+
+
+
+---
+
+###### Discovering Interpretable Directions in the Semantic Latent Space of Diffusion Models
+
+<div style="text-align: left;">
+
+
+* <span style="font-size:70%">  They take the Jacobian $e_\theta$ with respect to $h$, $J = \frac{\partial e_t^{\theta}(x_t, h_t)}{\partial h_t}$ (everything is vectorized).
+
+
+* <span style="font-size:70%"> The right singulare vectors are directions in $\mathcal{H}$ that cause the largest change in $e_t^{\theta}$
+
+*  <span style="font-size:70%">  
+
+
+<!-- ![bg right width:500px ](figs/riemannian.png) -->
+
+
 
