@@ -281,7 +281,6 @@ tangent space $T_h$ in H.
 
 ---
 
-##### Important Notes
 
 <div style="text-align: left;">
 
@@ -305,15 +304,87 @@ tangent space $T_h$ in H.
 <div style="text-align: left;">
 
 
-* <span style="font-size:70%">  They take the Jacobian $e_\theta$ with respect to $h$, $J = \frac{\partial e_t^{\theta}(x_t, h_t)}{\partial h_t}$ (everything is vectorized).
+* <span style="font-size:70%">  Calculate the Jacobian of $e_\theta(x_t, h_t)$ with respect to $h_t$, $J_t = \frac{\partial e_t^{\theta}(x_t, h_t)}{\partial h_t}$ (everything is vectorized).
 
 
-* <span style="font-size:70%"> The right singulare vectors are directions in $\mathcal{H}$ that cause the largest change in $e_t^{\theta}$
+* <span style="font-size:70%"> The right singulare vectors $v_i$ are directions in $\mathcal{H}$ that cause the largest change in $e_t^{\theta}$
 
-*  <span style="font-size:70%">  
+*  <span style="font-size:70%"> Editing is performed in $\mathcal{H}$ not $\mathcal{X}$
+    * <span style="font-size:70%"> $x_{t+1} = e_t^{\theta}(x_{t}, h_{t} + \alpha v^{\tau}_i)$
+    * <span style="font-size:70%"> where $v^{\tau}_i$ is the $i$-th right singular vector of $J_{\tau}$ 
+    
+---
 
 
-<!-- ![bg right width:500px ](figs/riemannian.png) -->
+###### Important Notes
+<div style="text-align: left;">
+
+
+* <span style="font-size:70%">  $e$ and $h$ again **vectorized** thus $J_t \in {\mathbb{R}^{m \times n}}$.  
+* <span style="font-size:70%"> Directions found in timestep t are used to edit **all** timesteps.
+* <span style="font-size:70%"> So for 50 timesteps and 50 singular vecors we get 2500 editing directions.
+
+
+
+---
+
+
+###### Supervised Editing
+<div style="text-align: left;">
+
+
+* <span style="font-size:70%">  Let a dataset $\{(x_i^+, x_i^-)\}_{i=1}^n$ of $n$ generated images with a present (+) or absent attribute (-) e.g. smile, old etc. 
+
+* <span style="font-size:70%"> Editing direction: $v_t=\frac{1}{n} \sum_{i=1}^n(h_i^+ - h_i^-)$.
+
+
+
+
+---
+
+
+###### Notes
+<div style="text-align: left;">
+
+
+* <span style="font-size:70%"> Approach of $1^\text{st}$ paper :
+  * <span style="font-size:70%"> Calculate the Jacobian of the *Unet encoder* $f: \mathcal{X} \rightarrow \mathcal{H}$, $J_t = \frac{\partial f}{\partial x_t}$.
+  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{X}$ that are the most influention on $\mathcal{H}$.
+  * <span style="font-size:70%"> The latent variable $h_t \in \mathcal{H}$ is completely determined by $x_t \in \mathcal{X}$.
+   
+
+<br>
+
+* <span style="font-size:70%"> Approach of $2^\text{nd}$ paper :
+  * <span style="font-size:70%"> Calculate the Jacobian of the *Unet* $e_\theta: \mathcal{X} \rightarrow \mathcal{X}$ w.r.t. $h_t \in \mathcal{H}$, $J_t = \frac{\partial e_\theta}{\partial h_t}$.
+
+  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{H}$ that are the most influention on $\mathcal{X}$.
+
+  * <span style="font-size:70%"> Since there are **skip connections** $x_{t+1}$ depends on $h_t$ but also in $x_t$. **$h_t$ doesnt determine the output completely**.
+
+
+
+
+---
+
+
+###### Direction?
+<div style="text-align: left;">
+
+
+* <span style="font-size:70%"> Retain the tensorial structure in the Jacobian and perform HOSVD.
+* <span style="font-size:70%"> In the formulation of the $2^{nd}$ paper:
+
+  * <span style="font-size:70%"> $J_t = \frac{\partial e_\theta (x_t, h_t)}{\partial h_t} \in \mathbb{R}^{m \times n}$, where $m = 256 \cdot 256 \cdot 3$ and $n = 8 \cdot 8 \cdot 1280$.
+
+  * <span style="font-size:70%">Reshape $J_t \in \mathbb{R}^{m \times H \times W \times C}$, where $H=W=8$ and $C=1280$.
+
+  
+  * <span style="font-size:70%">HOSVD on $J_t = S \times_1 U_m \times_2 U_H \times_3 U_W \times_4 U_C$.
+
+  * <span style="font-size:70%"> Mode-wise edits: $h_t = h_t +\alpha \cdot u_i^C \circ \mathbb{1}_H \circ \mathbb{1}_W$
+
+
 
 
 
