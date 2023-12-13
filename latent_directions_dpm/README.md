@@ -11,7 +11,7 @@ style: |
     gap: 1rem;
   }
   section {
-    line-height: 0.8; /* Adjust this value as needed */
+    line-height: 0.9; /* Adjust this value as needed */
   }
   .reference {
     position: absolute;
@@ -320,7 +320,7 @@ tangent space $T_h$ in H.
 <div style="text-align: left;">
 
 
-* <span style="font-size:70%">  $e$ and $h$ again **vectorized** thus $J_t \in {\mathbb{R}^{m \times n}}$.  
+* <span style="font-size:70%">  $e$ and $h$ are **vectorized**.
 * <span style="font-size:70%"> Directions found in timestep t are used to edit **all** timesteps.
 * <span style="font-size:70%"> So for 50 timesteps and 50 singular vecors we get 2500 editing directions.
 
@@ -349,7 +349,7 @@ tangent space $T_h$ in H.
 
 * <span style="font-size:70%"> Approach of $1^\text{st}$ paper :
   * <span style="font-size:70%"> Calculate the Jacobian of the *Unet encoder* $f: \mathcal{X} \rightarrow \mathcal{H}$, $J_t = \frac{\partial f}{\partial x_t}$.
-  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{X}$ that are the most influention on $\mathcal{H}$.
+  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{X}$ that show large variability in $\mathcal{H}$.
   * <span style="font-size:70%"> The latent variable $h_t \in \mathcal{H}$ is completely determined by $x_t \in \mathcal{X}$.
    
 
@@ -358,7 +358,7 @@ tangent space $T_h$ in H.
 * <span style="font-size:70%"> Approach of $2^\text{nd}$ paper :
   * <span style="font-size:70%"> Calculate the Jacobian of the *Unet* $e_\theta: \mathcal{X} \rightarrow \mathcal{X}$ w.r.t. $h_t \in \mathcal{H}$, $J_t = \frac{\partial e_\theta}{\partial h_t}$.
 
-  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{H}$ that are the most influention on $\mathcal{X}$.
+  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{H}$ that that show large variability in $\mathcal{X}$.
 
   * <span style="font-size:70%"> Since there are **skip connections** $x_{t+1}$ depends on $h_t$ but also in $x_t$. **$h_t$ doesnt determine the output completely**.
 
@@ -373,7 +373,7 @@ tangent space $T_h$ in H.
 
 
 * <span style="font-size:70%"> Retain the tensorial structure in the Jacobian and perform HOSVD.
-* <span style="font-size:70%"> In the formulation of the $2^{nd}$ paper:
+* <span style="font-size:70%"> In the setting of the $2^{nd}$ paper:
 
   * <span style="font-size:70%"> $J_t = \frac{\partial e_\theta (x_t, h_t)}{\partial h_t} \in \mathbb{R}^{m \times n}$, where $m = 256 \cdot 256 \cdot 3$ and $n = 8 \cdot 8 \cdot 1280$.
 
@@ -382,9 +382,28 @@ tangent space $T_h$ in H.
   
   * <span style="font-size:70%">HOSVD on $J_t = S \times_1 U_m \times_2 U_H \times_3 U_W \times_4 U_C$.
 
+  * <span style="font-size:70%"> Each $U_n$ is a basis vector for the space spanned by the mode-$n$ fibers.
+
   * <span style="font-size:70%"> Mode-wise edits: $h_t = h_t +\alpha \cdot u_i^C \circ \mathbb{1}_H \circ \mathbb{1}_W$
 
 
+
+---
+<div style="text-align: left;">
+
+* <span style="font-size:70%"> In the setting of the $1^{st}$ paper it is not straight forward since editing is performed in $\mathcal{X}$ not in $\mathcal{H}$.
+
+  * <span style="font-size:70%"> If $J_t \in \mathbb{R}^{m\times n}$ SVD gives left $u_i$ and right $v_i$ singular vectors that obay $u_i = \frac{1}{\sigma_i} J_t v_i$
+
+  * <span style="font-size:70%"> Thus directions in $\mathcal{X}$ can be mapped in $\mathcal{H}$ and vice-versa.
+
+* <span style="font-size:70%"> If we retain the tesorial structure of $J_t \in \mathbb{R}^{H \times W \times C \times n}$ and perform HOSVD:
+
+  * <span style="font-size:70%"> HOSVD on $J_t = S \times_1 U_H \times_2 U_W \times_3 U_C \times_4 U_n$.
+
+  * <span style="font-size:70%"> How can we map a basis vector $u_i^C$ to $\mathcal{X}$ as in SVD.
+
+  
 
 
 
