@@ -36,7 +36,10 @@ style: |
 <br>
 <div style="text-align: left;">
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c2b237d28b58f6fef5d2a54e4bfde387c4c3e9c8
 ---
 
 
@@ -45,12 +48,12 @@ style: |
 
 <div style="text-align: left;">
 
-- <span style="font-size:50%"> Diffusion Models Already Have A Semantic Latent Space 
+- <span style="font-size:50%"> **Diffusion Models Already Have A Semantic Latent Space** 
 (ICLR 2023)
-- <span style="font-size:50%"> Discovering Interpretable Directions in the Semantic Latent Space of Diffusion Models 
+- <span style="font-size:50%"> **Discovering Interpretable Directions in the Semantic Latent Space of Diffusion Models** 
 (Submitied CVPR 2023 ?)
 
-- <span style="font-size:50%"> Understanding the Latent Space of Diffusion Models through the Lens of Riemannian Geometry 
+- <span style="font-size:50%"> **Understanding the Latent Space of Diffusion Models through the Lens of Riemannian Geometry** 
 (NIPS 2023)
 
 ---
@@ -62,11 +65,11 @@ style: |
 
 <div style="text-align: left;">
 
-- <span style="font-size:80%"> Main Results:
+- <span style="font-size:70%"> Main Results:
 
-  - <span style="font-size:50%"> *h-space*: 
+  - <span style="font-size:60%"> *h-space*
 
-  - <span style="font-size:50%"> *Asymetric Reverse Process*: Small changes in UNet dont effect the inference
+  - <span style="font-size:60%"> *Asymetric Reverse Process (Asyrp)*
 
 ---
 
@@ -82,9 +85,9 @@ style: |
 
   - <span style="font-size:50%"> $\Delta h_t$ has the same semantic effect on different samples
 
-  - <span style="font-size:50%"> Scaling $\Delta h$ controls the magnitude of attribute chang
+  - <span style="font-size:50%"> Scaling $\Delta h$ controls the magnitude of attribute change
 
-  - <span style="font-size:50%"> Adding multiple ∆h manipulates the corresponding multiple attribute
+  - <span style="font-size:50%"> Adding multiple ∆h manipulates multiple attributes
 
 </div>
 
@@ -120,7 +123,7 @@ style: |
 
 <div style="text-align: left;">
 
-- <span style="font-size:80%"> How to they perform editing?:
+- <span style="font-size:80%"> How do they perform editing?:
 
   - <span style="font-size:50%"> Asyrp: $x_{t-1} = \sqrt{a_{t-1}}P_t(e^\theta_t(x_t|h_t + f(h_t))) + D_t(e^\theta_T(x_t))$
   
@@ -185,13 +188,13 @@ style: |
 
 - <span style="font-size:70%"> Main Ideas:
 
-  * <span style="font-size:70%"> $\mathcal{H}$ (bottleneck) exibits local linearity but $\mathcal{X}$ doesnt.
+  * <span style="font-size:60%"> $\mathcal{H}$ (bottleneck) exibits *local linearity* but $\mathcal{X}$ doesnt.
 
-  * <span style="font-size:70%"> The unet encoder is a function $f: \mathcal{X} \rightarrow \mathcal{H}$
+  * <span style="font-size:60%"> The unet encoder is a function $f: \mathcal{X} \rightarrow \mathcal{H}$
 
-  * <span style="font-size:70%"> Let $T_x$ and $T_h$ be tangat spaces at $x\in \mathcal{X}$ and $h \in \mathcal{H}$ respectivly.
+  * <span style="font-size:60%"> Let $T_x$ and $T_h$ be tangent spaces at $x\in \mathcal{X}$ and $h \in \mathcal{H}$ respectively.
   
-  * <span style="font-size:70%"> The Jacobian $J_x = \nabla_x h$ is a linear map, $J_x: T_x \rightarrow T_h$
+  * <span style="font-size:60%"> The Jacobian $J_x = \nabla_x h$ is a linear map, $J_x: T_x \rightarrow T_h$
 
 ![bg right width:500px ](figs/riemannian.png)
 
@@ -265,7 +268,7 @@ tangent space $T_h$ in H.
 
 <div style="text-align: left;">
 
-* <span style="font-size:70%"> The editing is performed in a single timestep.
+* <span style="font-size:70%"> Editing is performed in a single timestep.
 
 <br>
 <br>
@@ -340,13 +343,13 @@ tangent space $T_h$ in H.
 ---
 
 
-###### Notes
+###### Summary
 <div style="text-align: left;">
 
 
 * <span style="font-size:70%"> Approach of $1^\text{st}$ paper :
   * <span style="font-size:70%"> Calculate the Jacobian of the *Unet encoder* $f: \mathcal{X} \rightarrow \mathcal{H}$, $J_t = \frac{\partial f}{\partial x_t}$.
-  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{X}$ that show large variability in $\mathcal{H}$.
+  * <span style="font-size:70%"> The right singular vectors of $J_t$ are directions in $\mathcal{X}$ that show large variability in $\mathcal{H}$.
   * <span style="font-size:70%"> The latent variable $h_t \in \mathcal{H}$ is completely determined by $x_t \in \mathcal{X}$.
    
 
@@ -355,9 +358,9 @@ tangent space $T_h$ in H.
 * <span style="font-size:70%"> Approach of $2^\text{nd}$ paper :
   * <span style="font-size:70%"> Calculate the Jacobian of the *Unet* $e_\theta: \mathcal{X} \rightarrow \mathcal{X}$ w.r.t. $h_t \in \mathcal{H}$, $J_t = \frac{\partial e_\theta}{\partial h_t}$.
 
-  * <span style="font-size:70%"> The right singlular vectors of $J_t$ are directions in $\mathcal{H}$ that that show large variability in $\mathcal{X}$.
+  * <span style="font-size:70%"> The right singular vectors of $J_t$ are directions in $\mathcal{H}$ that show large variability in $\mathcal{X}$.
 
-  * <span style="font-size:70%"> Since there are **skip connections** $x_{t+1}$ depends on $h_t$ but also in $x_t$. **$h_t$ doesnt determine the output completely**.
+  * <span style="font-size:70%"> Since there are **skip connections**, $x_{t+1}$ depends on $h_t$ but also οn $x_t$. **$h_t$ doesn't determine the output completely**.
 
 
 
@@ -365,11 +368,12 @@ tangent space $T_h$ in H.
 ---
 
 
-###### Direction?
+###### Our Approach
 <div style="text-align: left;">
 
 
-* <span style="font-size:70%"> Retain the tensorial structure in the Jacobian and perform HOSVD.
+ <span style="font-size:70%"> Retain the tensorial structure of the Jacobian and perform HOSVD.
+ <br>
 * <span style="font-size:70%"> In the setting of the $2^{nd}$ paper:
 
   * <span style="font-size:70%"> $J_t = \frac{\partial e_\theta (x_t, h_t)}{\partial h_t} \in \mathbb{R}^{m \times n}$, where $m = 256 \cdot 256 \cdot 3$ and $n = 8 \cdot 8 \cdot 1280$.
@@ -388,17 +392,19 @@ tangent space $T_h$ in H.
 ---
 <div style="text-align: left;">
 
-* <span style="font-size:70%"> In the setting of the $1^{st}$ paper it is not straight forward since editing is performed in $\mathcal{X}$ not in $\mathcal{H}$.
+* <span style="font-size:70%"> In the setting of the $1^{st}$ paper:
 
-  * <span style="font-size:70%"> If $J_t \in \mathbb{R}^{m\times n}$ SVD gives left $u_i$ and right $v_i$ singular vectors that obay $u_i = \frac{1}{\sigma_i} J_t v_i$
+  * <span style="font-size:70%"> It is not straightforward, since editing is performed in $\mathcal{X}$ not in $\mathcal{H}$.
+
+  * <span style="font-size:70%"> If $J_t \in \mathbb{R}^{m\times n}$ SVD gives left $u_i$ and right $v_i$ singular vectors that obey $u_i = \frac{1}{\sigma_i} J_t v_i$
 
   * <span style="font-size:70%"> Thus directions in $\mathcal{X}$ can be mapped in $\mathcal{H}$ and vice-versa.
 
-* <span style="font-size:70%"> If we retain the tesorial structure of $J_t \in \mathbb{R}^{H \times W \times C \times n}$ and perform HOSVD:
+  * <span style="font-size:70%"> If we retain the tensorial structure of $J_t \in \mathbb{R}^{H \times W \times C \times n}$ and perform HOSVD:
 
-  * <span style="font-size:70%"> HOSVD on $J_t = S \times_1 U_H \times_2 U_W \times_3 U_C \times_4 U_n$.
+    * <span style="font-size:70%"> HOSVD on $J_t = S \times_1 U_H \times_2 U_W \times_3 U_C \times_4 U_n$.
 
-  * <span style="font-size:70%"> How can we map a basis vector $u_i^C$ to $\mathcal{X}$ as in SVD.
+    * <span style="font-size:70%"> How can we map a basis vector $u_i^C$ to a basis vector $u_i^n$ of $\mathcal{X}$ as in SVD?
 
   
 
