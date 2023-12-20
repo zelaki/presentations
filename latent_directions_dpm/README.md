@@ -36,9 +36,6 @@ style: |
 <br>
 <div style="text-align: left;">
 
-- <span style="font-size:50%"> Diffusion Models Already Have A Semantic Latent Space (ICLR 2023)
-- <span style="font-size:50%"> Discovering Interpretable Directions in the Semantic Latent Space of Diffusion Models (Submitied CPVR 2023 ?)
-- <span style="font-size:50%"> Understanding the Latent Space of Diffusion Models through the Lens of Riemannian Geometry (NIPS 2023)
 
 ---
 
@@ -174,8 +171,8 @@ style: |
 - <span style="font-size:70%"> Let $J_\phi: T_x M \rightarrow T_{\phi(x)} N$.
 
 - <span style="font-size:70%"> Then $J_\phi = U \Sigma V^*$:
-  - <span style="font-size:70%"> $u_1, ..., u_m$ of $U$ yield an orthonormal basis of $T_x M$
-  - <span style="font-size:70%"> $v1, ..., v_n$ of $V$ yield an orthonormal basis of $T_{\phi(x)} N$
+  - <span style="font-size:70%"> $v_1, ..., v_m$ of $V$ yield an orthonormal basis of $T_x M$
+  - <span style="font-size:70%"> $u1, ..., u_n$ of $U$ yield an orthonormal basis of $T_{\phi(x)} N$
   - <span style="font-size:70%"> $v_i$ directions in the input space that are most influential for the changes in the output space.
 
 
@@ -208,7 +205,7 @@ style: |
 * <span style="font-size:50%"> The right singular values $v_i$ of $J_x$ give $n$ semantic directions in $T_x$ that show
 large variability of the corresponding $u \in T_h$
 
-* <span style="font-size:50%"> The corresponding directions in $T_h$ (left singular values): $u_i = \frac{1}{\sigma_i} J_x v_i$
+* <span style="font-size:50%"> The corresponding directions in $T_h$ (left singular vectors): $u_i = \frac{1}{\sigma_i} J_x v_i$
 
 ![bg right width:500px ](figs/riemannian.png)
 
@@ -307,7 +304,7 @@ tangent space $T_h$ in H.
 * <span style="font-size:70%">  Calculate the Jacobian of $e_\theta(x_t, h_t)$ with respect to $h_t$, $J_t = \frac{\partial e_t^{\theta}(x_t, h_t)}{\partial h_t}$ (everything is vectorized).
 
 
-* <span style="font-size:70%"> The right singulare vectors $v_i$ are directions in $\mathcal{H}$ that cause the largest change in $e_t^{\theta}$
+* <span style="font-size:70%"> The right singular vectors $v_i$ are directions in $\mathcal{H}$ that cause the largest change in $e_t^{\theta}$
 
 *  <span style="font-size:70%"> Editing is performed in $\mathcal{H}$ not $\mathcal{X}$
     * <span style="font-size:70%"> $x_{t+1} = e_t^{\theta}(x_{t}, h_{t} + \alpha v^{\tau}_i)$
@@ -322,7 +319,7 @@ tangent space $T_h$ in H.
 
 * <span style="font-size:70%">  $e$ and $h$ are **vectorized**.
 * <span style="font-size:70%"> Directions found in timestep t are used to edit **all** timesteps.
-* <span style="font-size:70%"> So for 50 timesteps and 50 singular vecors we get 2500 editing directions.
+* <span style="font-size:70%"> So for 50 timesteps and 50 singular vectors we get 2500 editing directions.
 
 
 
